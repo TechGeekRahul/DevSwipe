@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Swipe. Connect. Code",
+  "main": "src/app.js",
+  "devDependencies": {},
+  "scripts": {
+    "start":"node src/app.js",
+    "dev": "nodemon src/app.js"
+    
+  },
+  "author": "Rahul kumar singh",
+  "license": "ISC"
+}
