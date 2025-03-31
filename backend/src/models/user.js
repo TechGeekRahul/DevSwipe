@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     firstName:{
         type:String,
         required: true,
+        index:true,
         minLength:5,
         maxLength:50,
     },
@@ -63,6 +64,8 @@ const userSchema = new mongoose.Schema({
     skills:{
         type:[String]
     }
+},{
+    timestamps : true,
 })
 userSchema.methods.getJwt = async function(){
     const user = this;
