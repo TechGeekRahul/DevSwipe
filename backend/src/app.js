@@ -3,15 +3,19 @@ const app =  express();
 const connectDb = require("./config/database");
 const User = require("./models/user");
 const bcrypt = require("bcrypt");
+const cors = require("cors");
 // const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser")
-const {validateSignUpData} = require("./utils/validation");
+// const {validateSignUpData} = require("./utils/validation");
 const authRouter = require("./routes/authRoute");
 const profileRouter = require("./routes/profileRoute");
 const requestRouter = require("./routes/request")
 const userRouter = require("./routes/user")
 
-
+app.use(cors({
+    origin:"http://localhost:5173",
+    credentials: true,
+}))
 app.use(express.json())
 app.use(cookieParser())
 
@@ -38,8 +42,3 @@ connectDb().then(()=>{
 )
 
 
-
-// listentoit
-// singhrahulkumar820
-
-// mongodb+srv://singhrahulkumar820:<db_password>@fullstackprojects.zpy5y.mongodb.net/?retryWrites=true&w=majority&appName=Fullstackprojects

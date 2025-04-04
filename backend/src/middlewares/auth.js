@@ -1,12 +1,12 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user")
 const userAuth = async(req,res,next)=>{
-    try {
+try {
         const {token} = req.cookies;
         
 
-if (!token || typeof token !== "string") {
-            throw new Error("Token is missing or not valid");
+if (!token) {
+        return    res.status(401).send("Please login")
         }
 const decodedObj = await jwt.verify(token,"Devswipe@rahul");
 const {_id} = decodedObj;
