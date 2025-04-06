@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { BASE_URL } from '../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
-import {addRequest} from "../utils/requestSlice"
+import {addRequest, removeRequest} from "../utils/requestSlice"
 
 const Requests = () => {
     const dispatch = useDispatch();
@@ -12,16 +12,28 @@ const Requests = () => {
         const res = await axios.get(BASE_URL + "/user/requests/recieved",{withCredentials : true});
         // console.log(res);
         dispatch(addRequest(res.data.data))
+        
+    }
+
+
+    const reviewRequests = async(status,_id)=>{
+
+        try {
+            const res = await axios.post(BASE_URL + "/request/review/" + status + "/" + _id,{}, {withCredentials : true});
+            dispatch(removeRequest(_id))
+        } catch (error) {
+            
+        }
     }
     useEffect(()=>{
         fetchRequests();
     },[])
     if(!requestData) return;
-    if(requestData.length === 0) return <h1>No requests found</h1>
+    if(requestData.length === 0) return <h1 className='flex justify-center my-10'>No requests found</h1>
 
   return (
     <div className='justify-between text-center my-10'>
-     <h1 className='text-bold text-2xl'>Requests</h1>
+     <h1 className='text-bold text-2xl'>Connection Requests</h1>
      {requestData.map((request)=>{
         const {firstName,lastName,photoUrl,age,gender,about} = request.fromUserId;
         return(
@@ -33,8 +45,8 @@ const Requests = () => {
                     <p>{about}</p>
                 </div>
                 <div className=' flex '>
-                <button className="btn btn-primary mx-2 mt-2.5">Primary</button>
-                <button className="btn btn-secondary mt-2.5">Secondary</button>
+                <button className="btn btn-primary mx-2 mt-2.5" onClick={()=>{reviewRequests("rejected",request._id)}}>Reject</button>
+                <button className="btn btn-secondary mt-2.5"  onClick={()=>{reviewRequests("accepted",request._id)}}>Accept</button>
                 </div>
             </div>
         )

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from "axios";
 import {useDispatch} from "react-redux";
@@ -13,28 +12,57 @@ const [lastName, setLastName] = useState(user.lastName);
 const [photoUrl,setPhotoUrl] = useState(user.photoUrl);
 const [age,setAge] = useState(user.age);
 const [about,setAbout] = useState(user.about);
-const [gender,setGender] = useState(user.gender)
+const [gender,setGender] = useState(user.gender);
+const [skills, setSkills] = useState(user.skills || []);
+const [newSkill, setNewSkill] = useState("");
 const [error,setError] = useState("");
 const [showToast,setShowToast] = useState(false)
 const dispatch = useDispatch();
 const navigate = useNavigate();
 
+const handleAddSkill = () => {
+  if (!newSkill.trim()) return;
+  
+  // Check if skill already exists (case insensitive)
+  if (skills.some(skill => skill.toLowerCase() === newSkill.toLowerCase())) {
+    setError("This skill is already added");
+    return;
+  }
+  
+  // Check if max limit reached
+  if (skills.length >= 10) {
+    setError("You can't add more than 10 skills");
+    return;
+  }
+  
+  setSkills([...skills, newSkill.trim()]);
+  setNewSkill("");
+  setError("");
+};
 
+const handleRemoveSkill = (skillToRemove) => {
+  setSkills(skills.filter(skill => skill !== skillToRemove));
+};
 
-const handleEdit =async()=>{
-    setError("")
+const handleEdit = async() => {
+    setError("");
     try {
-        const res = await axios.patch(BASE_URL + "/profile/edit",{
-            firstName,lastName,age,gender,about,photoUrl
-        },{withCredentials:true});
-        dispatch(addUser(res?.data?.data))
+        const res = await axios.patch(BASE_URL + "/profile/edit", {
+            firstName,
+            lastName,
+            age,
+            gender,
+            about,
+            photoUrl,
+            skills
+        }, {withCredentials:true});
+        dispatch(addUser(res?.data?.data));
         setShowToast(true);
-        setTimeout(()=>{
-            setShowToast(false)
-        },3000)
+        setTimeout(() => {
+            setShowToast(false);
+        }, 3000);
     } catch (error) {
-        
-        setError(error?.response?.data)
+        setError(error?.response?.data);
     }
 }
   return (
@@ -65,14 +93,50 @@ const handleEdit =async()=>{
 </div>
     <p>About</p>
     <textarea className="textarea" value={about} onChange={(e)=>{setAbout(e.target.value)}} placeholder="Write About Yourself"></textarea>
+    
+    <div className="mt-4">
+      <p>Skills ({skills.length}/10)</p>
+      <div className="flex gap-2 mb-2">
+        <input 
+          type="text" 
+          className="input flex-grow" 
+          value={newSkill} 
+          onChange={(e) => setNewSkill(e.target.value)}
+          placeholder="Add a skill" 
+          onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
+        />
+        <button 
+          className="btn btn-primary" 
+          onClick={handleAddSkill}
+          disabled={skills.length >= 10}
+        >
+          Add
+        </button>
+      </div>
+      
+      <div className="flex flex-wrap gap-2 mt-2">
+        {skills.map((skill, index) => (
+          <div key={index} className="badge badge-primary gap-1">
+            {skill}
+            <button 
+              className="btn btn-xs btn-circle" 
+              onClick={() => handleRemoveSkill(skill)}
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+    
     <p className='text-red-500'>{error}</p>
       <div className="card-actions flex justify-center mt-0">
-        <button  className="btn btn-primary" onClick={handleEdit}>Submit</button>
+        <button className="btn btn-primary" onClick={handleEdit}>Submit</button>
       </div>
     </div>
   </div>
   </div>
-  <Card className="my-10" user={{firstName,lastName,age,gender,about,photoUrl}}/>
+  <Card className="my-10" user={{firstName,lastName,age,gender,about,photoUrl,skills}}/>
  {showToast &&  (<div className="toast toast-top toast-center">
   <div className="alert alert-success">
     <span>Profile Updated Successfully</span>

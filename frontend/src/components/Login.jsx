@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import { addUser } from '../utils/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 
 
@@ -44,6 +44,10 @@ const navigate = useNavigate()
     <p className='text-red-500'>{error}</p>
       <div className="card-actions flex justify-center mt-0">
         <button onClick={handleLogin} className="btn btn-primary ">Login</button>
+      </div>
+      
+      <div className="text-center mt-4">
+        Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link>
       </div>
     </div>
   </div>

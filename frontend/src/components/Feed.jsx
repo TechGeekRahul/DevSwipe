@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BASE_URL } from '../utils/constants'
 import { useDispatch, useSelector } from 'react-redux'
 import { addFeed } from '../utils/feedSlice'
@@ -8,26 +8,63 @@ import Card from './Card'
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector(store => store.feed);
-  // console.log(feed.data);
-const getFeed = async()=>{
-  if(feed) return;
-try {
-  const res = await axios.get(BASE_URL+"/feed",{withCredentials:true});
-  // console.log(res.data)
-    dispatch(addFeed(res.data))
-}catch(error) {
-  console.error(error)
-}  
-}
+  const [isLoading, setIsLoading] = useState(false);
+  const [noUsersAvailable, setNoUsersAvailable] = useState(false);
+  
+  const getFeed = async(forceRefresh = false) => {
+    // Reset the no users flag if force refreshing
+    if (forceRefresh) {
+      setNoUsersAvailable(false);
+    }
+    
+    // Don't fetch if we already know there are no users available
+    if (noUsersAvailable && !forceRefresh) return;
+    
+    // Always fetch if feed is empty or has no data
+    if (forceRefresh || !feed || !feed.data || feed.data.length === 0) {
+      setIsLoading(true);
+      try {
+        const res = await axios.get(BASE_URL+"/feed",{withCredentials:true});
+        dispatch(addFeed(res.data));
+        
+        // If we got data but it's empty, set the flag to prevent further calls
+        if (!res.data || !res.data.data || res.data.data.length === 0) {
+          setNoUsersAvailable(true);
+        }
+      } catch(error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }
 
-useEffect(()=>{
-  getFeed()
-},[])
+  useEffect(() => {
+    getFeed();
+  }, [feed]); 
+
+  if (isLoading) return <div className='flex justify-center my-10'>Loading...</div>;
+  if (!feed) return <div className='flex justify-center my-10'>Loading...</div>;
+  
+  if (!feed.data || feed.data.length === 0) {
+    return (
+      <div className='flex flex-col items-center my-10'>
+        <h1 className='mb-4'>No users found</h1>
+        <button 
+          className='btn btn-primary' 
+          onClick={() => getFeed(true)}
+          disabled={isLoading}
+        >
+          {isLoading ? 'Refreshing...' : 'Refresh'}
+        </button>
+      </div>
+    );
+  }
 
   return (
-    feed && (<div className='flex justify-center my-10'>
+    <div className='flex justify-center my-10'>
       <Card user={feed.data[0]} />
-    </div>)
+    </div>
   )
 }
 
