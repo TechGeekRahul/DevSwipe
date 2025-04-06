@@ -5,54 +5,90 @@ import { addUser } from '../utils/userSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import { BASE_URL } from '../utils/constants';
 
-
-
 const Login = () => {
-  const [emailId , setEmailId] = useState("");
-  const [password , setPassword] = useState("");
-  const [error,setError] = useState("")
-const dispatch = useDispatch();
-const navigate = useNavigate()
+  const [emailId, setEmailId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleLogin = async()=>{
-  try {
-    const res = await axios.post(BASE_URL + "/login",{
-      emailId,
-      password
-    },{withCredentials: true})
-    dispatch(addUser(res.data))
-    navigate("/");
-
-  } catch (error) {
-    setError(error?.response?.data || "Something went wrong")
-    console.error(error)
+  const handleLogin = async() => {
+    if (!emailId || !password) {
+      setError("Email and password are required");
+      return;
+    }
+    
+    setIsLoading(true);
+    setError("");
+    
+    try {
+      const res = await axios.post(BASE_URL + "/login", {
+        emailId,
+        password
+      }, {withCredentials: true});
+      dispatch(addUser(res.data));
+      navigate("/");
+    } catch (error) {
+      setError(error?.response?.data || "Something went wrong");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
-
-  }
-
 
   return (
-    <div className=' flex justify-center'>
-    <div className="card bg-base-300 w-96 shadow-sm my-10 ">
-    <h1 className=' flex justify-center pt-5 text-3xl font-bold'>Login</h1>
-      
-    <div className="card-body">
-      <p>Email</p>
-    <input type="text" className="input" value={emailId} onChange={(e)=>{setEmailId(e.target.value)}} placeholder="Enter Email" />
-    <p>Password</p>
-    <input type="password" className="input" value={password} onChange={(e)=>{setPassword(e.target.value)}} placeholder="Enter Password" />
-    <p className='text-red-500'>{error}</p>
-      <div className="card-actions flex justify-center mt-0">
-        <button onClick={handleLogin} className="btn btn-primary ">Login</button>
-      </div>
-      
-      <div className="text-center mt-4">
-        Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link>
+    <div className="auth-container">
+      <div className="auth-card">
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold mb-2 code-text">
+            <span className="text-primary">&#60;</span>
+            DevSwipe
+            <span className="text-primary">/&#62;</span>
+          </h1>
+          <p className="text-sm opacity-70">Connect with developers who match your tech stack</p>
+        </div>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-1">Email</label>
+            <input 
+              type="email" 
+              className="dev-input w-full" 
+              value={emailId} 
+              onChange={(e) => setEmailId(e.target.value)} 
+              placeholder="your@email.com" 
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium mb-1">Password</label>
+            <input 
+              type="password" 
+              className="dev-input w-full" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              placeholder="••••••••" 
+            />
+          </div>
+          
+          {error && <div className="text-error text-sm py-2">{error}</div>}
+          
+          <button 
+            onClick={handleLogin} 
+            disabled={isLoading}
+            className="dev-button w-full bg-primary hover:bg-primary-focus text-white py-2 mt-2"
+          >
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
+          
+          <div className="text-center text-sm mt-6">
+            New to DevSwipe? <Link to="/signup" className="text-primary hover:underline">Create an account</Link>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  </div>
-  )
-}
+  );
+};
 
 export default Login;

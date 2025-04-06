@@ -17,7 +17,6 @@ const Card = ({user}) => {
       );
       console.log("Request response:", res);
       
-      // Dispatch the removeUserFromFeed action to update Redux store
       dispatch(removeUserFromFeed(userId));
       console.log("User removed from feed");
     } catch (error) {
@@ -28,46 +27,58 @@ const Card = ({user}) => {
   const {_id, firstName, lastName, about, photoUrl, age, gender, skills} = user;
   
   return (
-    <div className="card bg-base-300 w-80 shadow-sm h-4/5 mt-10">
-      <figure>
-        <img src={photoUrl} alt={`${firstName}'s photo`} />
-      </figure>
-      <div className="card-body">
-        <h2 className="card-title flex justify-center">{firstName + " " + lastName}</h2>
-        <div>
-          <span className=''>{age + " ,"}</span>
-          <span className=''>{gender}</span>
+    <div className="dev-card bg-card-bg max-w-md w-full mx-auto overflow-hidden">
+      <div className="relative">
+        <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-r from-primary to-secondary opacity-80"></div>
+        <img 
+          src={photoUrl} 
+          alt={`${firstName}'s profile`} 
+          className="w-full h-64 object-cover"
+        />
+      </div>
+      
+      <div className="p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-bold code-text">{firstName} {lastName}</h2>
+          <div className="flex items-center text-sm opacity-75">
+            <span>{age}</span>
+            <span className="mx-1">•</span>
+            <span>{gender}</span>
+          </div>
         </div>
-        <p className='flex justify-center mb-1'>{about}</p>
+        
+        <p className="mb-4 text-sm opacity-90 line-clamp-3">{about}</p>
         
         {skills && skills.length > 0 && (
-          <div className="mt-2">
-            <p className="text-sm font-medium mb-1">Skills:</p>
-            <div className="flex flex-wrap gap-1">
+          <div className="mb-6">
+            <h3 className="text-xs uppercase tracking-wide opacity-70 mb-2">Tech Stack</h3>
+            <div className="flex flex-wrap gap-2">
               {skills.map((skill, index) => (
-                <span key={index} className="badge badge-primary badge-sm">{skill}</span>
+                <span key={index} className="dev-badge bg-primary/20 text-white text-xs px-2 py-1 rounded-full">
+                  {skill}
+                </span>
               ))}
             </div>
           </div>
         )}
 
-        <div className="card-actions justify-around mt-2">
+        <div className="flex gap-4 mt-4">
           <button 
-            className="btn btn-primary" 
+            className="dev-button flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 rounded transition-all"
             onClick={() => handleSendRequest("ignored", _id)}
           >
-            Ignore
+            Pass
           </button>
           <button 
-            className="btn bg-pink-500" 
+            className="dev-button flex-1 bg-gradient-to-r from-primary to-secondary text-white py-2 rounded transition-all"
             onClick={() => handleSendRequest("interested", _id)}
           >
-            Interested
+            Connect
           </button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

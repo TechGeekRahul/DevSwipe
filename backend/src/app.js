@@ -11,6 +11,7 @@ const authRouter = require("./routes/authRoute");
 const profileRouter = require("./routes/profileRoute");
 const requestRouter = require("./routes/request")
 const userRouter = require("./routes/user")
+require("dotenv").config();
 
 app.use(cors({
     origin:"http://localhost:5173",
@@ -28,17 +29,22 @@ app.use("/",userRouter)
 
 app.use('/',(err,req,res,next)=>{
     if(err){
-        res.status(500).send("something went wrong")
+        console.error("Server error:", err);
+        res.status(500).send("Something went wrong")
     }
 })
+
+// Get port from environment variable or use 3000 as default
+const PORT = process.env.PORT || 3000;
+
 connectDb().then(()=>{
     console.log("connected to mongodb successfully")
-    app.listen(3000,()=>{
-        console.log("server is running on 3000")
+    app.listen(PORT,()=>{
+        console.log(`Server is running on port ${PORT}`)
     })
 }).catch(err =>{
-    console.error("database connection failed")
-}
-)
+    console.error("Database connection failed:", err.message);
+    process.exit(1);
+})
 
 

@@ -43,29 +43,54 @@ const Feed = () => {
     getFeed();
   }, [feed]); 
 
-  if (isLoading) return <div className='flex justify-center my-10'>Loading...</div>;
-  if (!feed) return <div className='flex justify-center my-10'>Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-[70vh]">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-lg opacity-70">Finding developers...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!feed) {
+    return (
+      <div className="flex justify-center items-center min-h-[70vh]">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-lg opacity-70">Loading...</p>
+        </div>
+      </div>
+    );
+  }
   
   if (!feed.data || feed.data.length === 0) {
     return (
-      <div className='flex flex-col items-center my-10'>
-        <h1 className='mb-4'>No users found</h1>
-        <button 
-          className='btn btn-primary' 
-          onClick={() => getFeed(true)}
-          disabled={isLoading}
-        >
-          {isLoading ? 'Refreshing...' : 'Refresh'}
-        </button>
+      <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
+        <div className="text-center max-w-md">
+          <h1 className="text-2xl font-bold mb-4 code-text">No Matches Found</h1>
+          <p className="mb-6 opacity-70">We couldn't find any developers matching your profile right now.</p>
+          <button 
+            className="dev-button bg-primary text-white px-6 py-2"
+            onClick={() => getFeed(true)}
+            disabled={isLoading}
+          >
+            {isLoading ? 'Refreshing...' : 'Try Again'}
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className='flex justify-center my-10'>
+    <div className="py-10 px-4 max-w-4xl mx-auto">
+      <h1 className="text-2xl font-bold mb-8 text-center code-text">
+        <span className="text-primary">Find</span> Your Next Dev <span className="text-secondary">Connection</span>
+      </h1>
       <Card user={feed.data[0]} />
     </div>
-  )
+  );
 }
 
 export default Feed

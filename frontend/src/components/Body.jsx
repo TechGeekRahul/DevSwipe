@@ -35,9 +35,11 @@ const Body = () => {
   },[])
   
   return (
-    <div>
+    <div className="flex flex-col min-h-screen bg-bg-dark text-text-light">
       <Navbar />
-      <Outlet />
+      <main className="flex-grow pt-16">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   )

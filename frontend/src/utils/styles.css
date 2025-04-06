@@ -1,0 +1,133 @@
+:root {
+  --primary-color: #6366f1;
+  --secondary-color: #f43f5e;
+  --bg-dark: #1e293b;
+  --bg-light: #f8fafc;
+  --text-dark: #0f172a;
+  --text-light: #f1f5f9;
+  --card-bg: #233044;
+  --card-footer: #182333;
+  --card-hover: #2c3c54;
+  --success: #10b981;
+  --error: #ef4444;
+  --warning: #f59e0b;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+.auth-container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.8);
+  z-index: 1;
+}
+
+.auth-card {
+  background: rgba(26, 36, 54, 0.95);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  max-width: 450px;
+  padding: 2rem;
+  margin: 1rem;
+  z-index: 10;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.code-text {
+  font-family: 'Fira Code', 'Courier New', monospace;
+}
+
+.dev-gradient {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+}
+
+.dev-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background-color: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.dev-card:hover {
+  transform: translateY(-5px);
+  background-color: var(--card-hover);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.dev-button {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dev-button:hover {
+  transform: translateY(-2px);
+}
+
+.dev-input {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--text-light);
+  transition: all 0.2s;
+}
+
+.dev-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  outline: none;
+}
+
+.dev-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: var(--primary-color);
+  color: var(--text-light);
+}
+
+@media (max-width: 768px) {
+  .responsive-flex {
+    flex-direction: column;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .auth-card {
+    padding: 1.5rem;
+  }
+} 
