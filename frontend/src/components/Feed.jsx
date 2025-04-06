@@ -8,7 +8,7 @@ import Card from './Card'
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector(store => store.feed);
-  console.log(feed.data);
+  // console.log(feed.data);
 const getFeed = async()=>{
   if(feed) return;
 try {
