@@ -14,8 +14,10 @@ const userRouter = require("./routes/user")
 require("dotenv").config();
 
 app.use(cors({
-    origin:"https://dev-swipe-rahul.vercel.app",
+    origin: ["https://dev-swipe-rahul.vercel.app", "http://localhost:5173"],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }))
 app.use(express.json())
 app.use(cookieParser())
