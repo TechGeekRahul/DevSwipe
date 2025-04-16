@@ -1,4 +1,4 @@
-# <DevSwipe/> - Developer Connection Platform
+# <DevSwipe/> - Where Developers Meet and Magic Happens.
 
 ![DevSwipe Banner](https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80)
 
@@ -75,11 +75,11 @@ DevSwipe is a modern platform designed to help developers connect with like-mind
 
 ## 📱 Application Screenshots
 
-![Login Screen]() 
+![Login Screen](![alt text](image-2.png)) 
 
-![Developer Discovery]()
+![Developer Discovery](![alt text](image.png))
 
-![Profile Page]()
+![Profile Page](![alt text](image-1.png))
 
 ## 🤝 Contributing
 
