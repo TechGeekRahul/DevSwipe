@@ -14,9 +14,21 @@ const userRouter = require("./routes/user")
 require("dotenv").config();
 
 app.use(cors({
-    origin: ["https://dev-swipe-rahul.vercel.app", "http://localhost:5173","http://16.171.33.120"],
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true);
+        const allowedOrigins = ["https://dev-swipe-rahul.vercel.app", "http://16.171.33.120"];
+        const isLocal = origin.startsWith("http://localhost:") || 
+                        origin.startsWith("http://127.0.0.1:") || 
+                        origin.match(/^http:\/\/192\.168\.\d+\.\d+(:\d+)?$/) || 
+                        origin.match(/^http:\/\/10\.\d+\.\d+\.\d+(:\d+)?$/);
+        if (allowedOrigins.indexOf(origin) !== -1 || isLocal) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
 app.use(express.json())

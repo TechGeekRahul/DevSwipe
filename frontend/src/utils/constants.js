@@ -1,2 +1,2 @@
 // export const BASE_URL = "https://devswipe-backend-rahul.onrender.com";
-export const BASE_URL = "/api";
+export const BASE_URL = "http://localhost:3000";
