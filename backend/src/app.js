@@ -16,7 +16,7 @@ require("dotenv").config();
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin) return callback(null, true);
-        const allowedOrigins = ["https://dev-swipe-rahul-hof9y5f4d-rahul-kumar-singhs-projects.vercel.app/", "http://16.171.33.120"];
+        const allowedOrigins = ["https://dev-swipe-rahul.vercel.app/", "http://16.171.33.120"];
         const isLocal = origin.startsWith("http://localhost:") ||
             origin.startsWith("http://127.0.0.1:") ||
             origin.match(/^http:\/\/192\.168\.\d+\.\d+(:\d+)?$/) ||
